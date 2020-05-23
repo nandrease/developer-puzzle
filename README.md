@@ -1,3 +1,24 @@
+# Code analysis by NA
+What is good:
+1. + Uses centralized store design and unidirectional data flow (FLUX)
+2. + The store is injected as a centralized service via the constructor (dependency injection)
+3. + Using Observer syntax
+4. + Using Angular Material design system
+5. + Properly implemented monorepo structure
+
+What needs improvement:
+1. - Instead of providers (old syntax) to import facades and factories could use Injectable classes
+2. - Variables with any type (chartComponent.ts)
+4. - Stock form component button should have type="submit"
+5. - Server not implemented yet
+6. - Unit tests and e2e tests are not up-to-date
+
+Code smells:
+1. Components (chart.component.html) isn't waiting for async data load which breaks the application
+2. Get rid of unused imports and variables (chart.component.ts, stocks.component.ts)
+3. Have specific variable 'chartData' while could get away not defining/using it
+4. No feedback or error handling in Front-End while fetching data
+
 # T-Mobile Coding Challenge
 
 ### Important! Read this First !
