@@ -8,7 +8,7 @@ What is good:
 
 What needs improvement:
 1. - Instead of providers (old syntax) to import facades and factories could use Injectable classes
-2. - Variables with any type (chartComponent.ts)
+2. - Variables with any type (chartComponent.ts) - Fixed
 4. - Stock form component button should have type="submit"
 5. - Server not implemented yet
 6. - Unit tests and e2e tests are not up-to-date
@@ -16,7 +16,7 @@ What needs improvement:
 Code smells:
 1. Components (chart.component.html) isn't waiting for async data load which breaks the application
 2. Get rid of unused imports and variables (chart.component.ts, stocks.component.ts)
-3. Have specific variable 'chartData' while could get away not defining/using it
+3. Have specific variable 'chartData' while could get away not defining/using it - Fixed
 4. No feedback or error handling in Front-End while fetching data
 
 # T-Mobile Coding Challenge
