@@ -11,6 +11,8 @@ export class StocksComponent implements OnInit {
   stockPickerForm: FormGroup;
   symbol: string;
   period: string;
+  fromDate: Date;
+  toDate: Date;
 
   quotes$ = this.priceQuery.priceQueries$;
 
@@ -26,18 +28,43 @@ export class StocksComponent implements OnInit {
   ];
 
   constructor(private fb: FormBuilder, private priceQuery: PriceQueryFacade) {
-    this.stockPickerForm = fb.group({
-      symbol: [null, Validators.required],
-      period: [null, Validators.required]
-    });
+    this.stockPickerForm = fb.group(
+      {
+        symbol: [ null, Validators.required ],
+        // period: [ '3m', Validators.required ],
+        fromDate: [ null, Validators.required ],
+        toDate: [ null, Validators.required ]
+      }
+    );
   }
 
-  ngOnInit() {}
+  fromDateFilter: (date: Date | null) => boolean = (date: Date | null) => {
+    const now = new Date().getTime();
+    const filteredDate = date.getTime();
+    const toDate = this.stockPickerForm.value.toDate;
+    if (toDate) {
+      return filteredDate < toDate.getTime();
+    }
+    return filteredDate < now;
+  };
+  toDateFilter: (date: Date | null) => boolean = (date: Date | null) => {
+    const now = new Date().getTime();
+    const filteredDate = date.getTime();
+    const fromDate = this.stockPickerForm.value.fromDate;
+    if (fromDate) {
+      return filteredDate > fromDate.getTime() && filteredDate < now;
+    }
+    return filteredDate < now;
+  };
+
+  ngOnInit() {
+    this.stockPickerForm.valueChanges.subscribe(this.fetchQuote.bind(this));
+  }
 
   fetchQuote() {
     if (this.stockPickerForm.valid) {
-      const { symbol, period } = this.stockPickerForm.value;
-      this.priceQuery.fetchQuote(symbol, period);
+      const { symbol, fromDate, toDate } = this.stockPickerForm.value;
+      this.priceQuery.fetchQuote(symbol, fromDate, toDate);
     }
   }
 }
