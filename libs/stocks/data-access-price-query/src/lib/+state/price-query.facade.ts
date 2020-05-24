@@ -18,7 +18,25 @@ export class PriceQueryFacade {
 
   constructor(private store: Store<PriceQueryPartialState>) {}
 
-  fetchQuote(symbol: string, period: string) {
+  fetchQuote(symbol: string, fromDate: Date, toDate: Date) {
+    const period = this.fetchPeriodFromNow(fromDate);
     this.store.dispatch(new FetchPriceQuery(symbol, period));
+  }
+
+  fetchPeriodFromNow(fromDate: Date): string {
+    // Need to fetch data from 'fromDate' to today
+    const start = fromDate.getTime();
+    const now = new Date().getTime();
+    const dayInMilliSeconds = 1000 * 3600 * 24;
+    const period = (now - start) / dayInMilliSeconds;
+    if (period / 365 > 1) {
+      return Math.ceil(period / 365) + 'y';
+    } else if (period / 30 > 1) {
+      return Math.ceil(period / 30) + 'm';
+    } else if (period / 7 > 1) {
+      return Math.ceil(period / 7) + 'w';
+    } else {
+      return Math.ceil(period) + 'd';
+    }
   }
 }
